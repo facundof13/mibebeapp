@@ -1,0 +1,72 @@
+{
+  "compilerOptions": {
+    /* Base Options: */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "checkJs": true,
+
+    /* Bundled projects */
+    "lib": ["dom", "dom.iterable", "ES2022"],
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "plugins": [{ "name": "next" }],
+    "incremental": true,
+
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": [
+    ".eslintrc.cjs",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.cjs",
+    "**/*.js",
+    ".next/types/**/*.ts",
+    "../mibebe/app/components/ui/alert-dialog.tsx",
+    "../mibebe/app/components/ui/avatar.tsx",
+    "../mibebe/app/components/ui/breadcrumb.tsx",
+    "../mibebe/app/components/ui/button.tsx",
+    "../mibebe/app/components/ui/calendar.tsx",
+    "../mibebe/app/components/ui/card.tsx",
+    "../mibebe/app/components/ui/checkbox.tsx",
+    "../mibebe/app/components/ui/Container.tsx",
+    "../mibebe/app/components/ui/datetime-picker.tsx",
+    "../mibebe/app/components/ui/dialog.tsx",
+    "../mibebe/app/components/ui/dropdown-menu.tsx",
+    "../mibebe/app/components/ui/input.tsx",
+    "../mibebe/app/components/ui/label.tsx",
+    "../mibebe/app/components/ui/mode-toggle.tsx",
+    "../mibebe/app/components/ui/popover.tsx",
+    "../mibebe/app/components/ui/radio-group.tsx",
+    "../mibebe/app/components/ui/select.tsx",
+    "../mibebe/app/components/ui/separator.tsx",
+    "../mibebe/app/components/ui/sheet.tsx",
+    "../mibebe/app/components/ui/textarea.tsx",
+    "../mibebe/app/components/ui/TextPairing.tsx",
+    "../mibebe/app/components/ui/toast.tsx",
+    "../mibebe/app/components/ui/toaster.tsx",
+    "../mibebe/app/components/AddEntry.tsx",
+    "../mibebe/app/components/Auth.tsx",
+    "../mibebe/app/components/DefaultCatchBoundary.tsx",
+    "../mibebe/app/components/Footer.tsx",
+    "../mibebe/app/components/Navbar.tsx",
+    "../mibebe/app/components/NotFound.tsx",
+    "../mibebe/app/components/theme-provider.tsx"
+  ],
+  "exclude": ["node_modules"]
+}
