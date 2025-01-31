@@ -1,18 +1,20 @@
-import { authClient } from "~/app/lib/auth";
+import { authClient } from "~/lib/auth-client";
 import { type ReactNode } from "react";
 
 export function SignedIn({ children }: { children: ReactNode }) {
   const session = authClient.useSession();
-  if (session.isPending || session.error || !session?.data?.user == null) {
+  if (session.isPending || session.error || session?.data?.user == null) {
     return null;
   }
   return children;
 }
 
 export function SignedOut({ children }: { children: ReactNode }) {
-  return children;
-}
+  const session = authClient.useSession();
 
-export function SignOutButton() {
-  return <div></div>;
+  if (!session.isPending && session.error == null && session.data == null) {
+    return children;
+  }
+
+  return null;
 }

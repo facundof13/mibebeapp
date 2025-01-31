@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model account {
+  id                       String    @id
+  account_id               String
+  provider_id              String
+  user_id                  String
+  access_token             String?
+  refresh_token            String?
+  id_token                 String?
+  access_token_expires_at  DateTime? @db.Timestamp(6)
+  refresh_token_expires_at DateTime? @db.Timestamp(6)
+  scope                    String?
+  password                 String?
+  created_at               DateTime  @db.Timestamp(6)
+  updated_at               DateTime  @db.Timestamp(6)
+  user                     user      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "account_user_id_user_id_fk")
+}
+
+model baby {
+  id            Int         @id @default(autoincrement())
+  name          String
+  creator_id    String
+  date_of_birth DateTime    @db.Timestamp(6)
+  created_on    DateTime    @default(now()) @db.Timestamp(6)
+  updated_on    DateTime    @default(now()) @db.Timestamp(6)
+  baby_user     baby_user[]
+  event         event[]
+}
+
+model baby_user {
+  id         Int    @id @default(autoincrement())
+  baby_id    Int
+  user_email String
+  baby       baby   @relation(fields: [baby_id], references: [id], onDelete: Cascade, map: "baby_user_baby_id_baby_id_fk")
+
+  @@index([id, user_email], map: "baby_user_")
+}
+
+model diaper_note {
+  id       Int     @id @default(autoincrement())
+  event_id Int     @unique(map: "diaper_note_event_id_unique")
+  is_dirty Boolean @default(false)
+  is_wet   Boolean @default(false)
+  event    event   @relation(fields: [event_id], references: [id], onDelete: Cascade, map: "diaper_note_event_id_event_id_fk")
+}
+
+model event {
+  id           Int           @id @default(autoincrement())
+  owner_id     String
+  started_at   DateTime      @default(now()) @db.Timestamp(6)
+  ended_at     DateTime      @default(now()) @db.Timestamp(6)
+  baby_id      Int
+  diaper_note  diaper_note?
+  baby         baby          @relation(fields: [baby_id], references: [id], onDelete: Cascade, map: "event_baby_id_baby_id_fk")
+  feeding_note feeding_note?
+
+  @@index([id, owner_id], map: "event_owner_idx")
+}
+
+model feeding_note {
+  id                Int     @id @default(autoincrement())
+  event_id          Int     @unique(map: "feeding_note_event_id_unique")
+  amount            Int
+  is_bottle_breast  Boolean @default(false)
+  is_bottle_formula Boolean @default(false)
+  is_breast         Boolean @default(false)
+  event             event   @relation(fields: [event_id], references: [id], onDelete: Cascade, map: "feeding_note_event_id_event_id_fk")
+}
+
+model session {
+  id         String   @id
+  expires_at DateTime @db.Timestamp(6)
+  token      String   @unique(map: "session_token_unique")
+  created_at DateTime @db.Timestamp(6)
+  updated_at DateTime @db.Timestamp(6)
+  ip_address String?
+  user_agent String?
+  user_id    String
+  user       user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "session_user_id_user_id_fk")
+}
+
+model user {
+  id             String    @id
+  name           String
+  email          String    @unique(map: "user_email_unique")
+  email_verified Boolean
+  image          String?
+  created_at     DateTime  @db.Timestamp(6)
+  updated_at     DateTime  @db.Timestamp(6)
+  account        account[]
+  session        session[]
+}
+
+model verification {
+  id         String    @id
+  identifier String
+  value      String
+  expires_at DateTime  @db.Timestamp(6)
+  created_at DateTime? @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+}
+
+enum feeding_unit {
+  oz
+  ml
+}

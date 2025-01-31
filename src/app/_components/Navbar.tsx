@@ -1,4 +1,5 @@
 "use client";
+
 import clsx from "clsx";
 import { GitHubLogoIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
@@ -14,6 +15,8 @@ import { Button } from "~/app/_components/ui/button";
 import Link from "next/link";
 import { ModeToggle } from "./ui/mode-toggle";
 import { usePathname } from "next/navigation";
+import { authClient } from "../../lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -91,7 +94,12 @@ function NavButton({
 function Buttons({ setIsOpen }: { setIsOpen: (arg0: boolean) => void }) {
   const closeSheet = () => setIsOpen(false);
   const pathname = usePathname();
-  console.log({ pathname });
+  const router = useRouter();
+  const signOut = async () => {
+    closeSheet();
+    await authClient.signOut();
+    router.push("/");
+  };
 
   return (
     <>
@@ -103,17 +111,10 @@ function Buttons({ setIsOpen }: { setIsOpen: (arg0: boolean) => void }) {
         />
       </Link>
       <SignedOut>
-        <Link href="/sign-in">
+        <Link href="/login">
           <NavButton
-            label="Sign In"
-            isActive={pathname === "/sign-in"}
-            onClick={closeSheet}
-          />
-        </Link>
-        <Link href="/sign-up">
-          <NavButton
-            label="Sign Up"
-            isActive={pathname === "/sign-up"}
+            label="Login"
+            isActive={pathname === "/login"}
             onClick={closeSheet}
           />
         </Link>
@@ -127,7 +128,7 @@ function Buttons({ setIsOpen }: { setIsOpen: (arg0: boolean) => void }) {
           />
         </Link>
 
-        <NavButton label="Sign Out" onClick={closeSheet} />
+        <NavButton label="Sign Out" onClick={signOut} />
       </SignedIn>
     </>
   );

@@ -12,7 +12,7 @@ import { useForm } from "@tanstack/react-form";
 import { Label } from "../_components/ui/label";
 import { Input } from "../_components/ui/input";
 
-export const userSchema = z.object({
+const userSchema = z.object({
   name: z.string().nonempty(),
   email: z.string().email(),
   password: z.string().nonempty().min(8),
